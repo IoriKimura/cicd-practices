@@ -31,4 +31,4 @@ jobs:
         working-directory: practice_2
         run: |
           source venv/bin/activate
-          pytesti
+          pytest
