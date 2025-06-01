@@ -5,3 +5,5 @@
 Выполнил: Иванов С.К.
 
 Группа: БСМО-30-24
+
+![Test Status](https://github.com/IoriKimura/cicd-practices/actions/workflows/ci.yml/badge.svg)
