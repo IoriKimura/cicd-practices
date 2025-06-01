@@ -12,13 +12,11 @@ jobs:
         run: |
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
-            -d text="❌ Ошибка в practice_2 на Python ${{ matrix.python-version }}." \
-            -d parse_mode=Markdown
+            -d text="❌ Ошибка в $GITHUB_SHA"
 
       - name: Send Telegram message on success  # 🔹 Уведомление в Telegram
         if: success()
         run: |
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
-            -d text="✅ Успешно прошли проверки practice_2 на Python ${{ matrix.python-version }}." \
-            -d parse_mode=Markdown
+            -d text="✅ Успешно прошли проверки $GITHUB_SHA
