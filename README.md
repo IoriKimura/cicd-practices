@@ -6,4 +6,4 @@
 
 Группа: БСМО-30-24
 
-![Test Status](https://github.com/IoriKimura/cicd-practices/actions/workflows/ci.yml/badge.svg)
+![Test Status](https://github.com/IoriKimura/cicd-practices/actions/workflows/ci-2.yml/badge.svg)
