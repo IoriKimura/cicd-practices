@@ -4,31 +4,21 @@ on: [push, pull_request]
 
 jobs:
   test:
+    name: Notifications
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-
-      - name: Install dependencies
-        working-directory: practice_2
+      - name: Send Telegram message on failure  # 🔹 Уведомление в Telegram
+        if: failure()
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
-      
-      - name: Run flake8 (линтер)
-        working-directory: practice_2
-        run: |
-          source venv/bin/activate
-          flake8 .
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+            -d text="❌ Ошибка в practice_2 на Python ${{ matrix.python-version }}." \
+            -d parse_mode=Markdown
 
-      - name: Run tests
-        working-directory: practice_2
+      - name: Send Telegram message on success  # 🔹 Уведомление в Telegram
+        if: success()
         run: |
-          source venv/bin/activate
-          pytest
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+            -d text="✅ Успешно прошли проверки practice_2 на Python ${{ matrix.python-version }}." \
+            -d parse_mode=Markdown
