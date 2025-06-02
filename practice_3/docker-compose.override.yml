@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  web:
+    image: iorikimura/practice_3-web:latest
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydb
+      - FLASK_ENV=development
