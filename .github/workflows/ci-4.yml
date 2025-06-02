@@ -1,0 +1,49 @@
+name: Test and Build Practice 4
+
+on:
+  push:
+    paths:
+      - 'practice_4/**'
+  pull_request:
+    paths:
+      - 'practice_4/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        working-directory: practice_4
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Run tests
+        working-directory: practice_4
+        run: |
+          source venv/bin/activate
+          pytest
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        working-directory: practice_4
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        working-directory: practice_4
+        run: docker build -t myapp:latest .
