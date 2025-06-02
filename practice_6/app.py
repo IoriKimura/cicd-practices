@@ -1,12 +1,11 @@
 from flask import Flask
-from prometheus_flask_exporter import PrometheusMetrics
 import logging
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)
 
-
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(filename='/var/log/flask-app.log', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 @app.route('/')
