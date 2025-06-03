@@ -25,12 +25,18 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/practice_5-web:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/practice_5-web:latest
   deploy:
-      needs: build
-      runs-on: self-hosted
-      steps:
-        - name: Pull and restart container
-          run: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/practice_5-web:latest
-            docker stop practice_5-web || true
-            docker rm practice_5-web || true
-            docker run -d --name practice_5-web -p 81:5004 ${{ secrets.DOCKER_USERNAME }}/practice_5-web:latest
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Deploy to Server via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: '${{ secrets.SERVER_IP }}'
+          username: '${{ secrets.SERVER_USER }}'
+          key: '${{ secrets.SSH_PRIVATE_KEY }}'
+          port: '${{ secrets.SSH_PORT }}'
+          script: |
+            cd /home/sergei/ 
+            docker compose pull
+            docker compose down
+            docker compose up -d
