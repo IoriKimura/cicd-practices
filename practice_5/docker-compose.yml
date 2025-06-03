@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  web:
+    image: iorikimura/practice_5-web:latest
+    ports:
+      - '81:5004'
+    restart: always
